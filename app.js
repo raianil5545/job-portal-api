@@ -2,7 +2,7 @@ const express = require("express")
 require("dotenv").config()
 
 
-const auth_route = require("../job-portal-api/route/auth")
+const auth_route = require("./route/authApplicant")
 const app = express();
 
 
@@ -14,7 +14,7 @@ app.use(express.json())
 
 // endpoint
 // user-endpoint
-app.use("/api/users", auth_route)
+app.use("/api/jobseeker", auth_route)
 
 // error handler
 app.use((err, req, res, next) => {

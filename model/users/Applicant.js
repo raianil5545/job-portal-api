@@ -23,12 +23,6 @@ const applicantSchema = new Schema({
         select: false,
         required: true
     },
-    job_category: {
-        type: String,
-        lowercase: true,
-        required: true,
-        enum: [""]
-    },
     is_active: {
         type: Boolean,
         default: true
