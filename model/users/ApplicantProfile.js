@@ -24,6 +24,8 @@ const applicantProfileSchema = new Schema({
         type: String, 
         enum: ["male", "female"]
     },
+    profile_pic: {}
+    ,
     expected_salary: {
         amount: {
             type: Number

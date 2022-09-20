@@ -29,7 +29,8 @@ const login = async (req, res, next) => {
         if (user.is_active) {
             let jwtUserObj = {
                 id: user.id,
-                email: user.email
+                email: user.email, 
+                isApplicant: true
             }
             let isvalidUser = bcrypt.compareSync(req.body.password, user.password)
             if (isvalidUser) {

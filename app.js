@@ -2,7 +2,8 @@ const express = require("express")
 require("dotenv").config()
 
 
-const auth_route = require("./route/authApplicant")
+const applicantAuthRoute = require("./route/authApplicant")
+const applicantProfileRoute = require("./route/applicantProfile")
 const app = express();
 
 
@@ -12,15 +13,25 @@ require("../job-portal-api/config/dbConnection")
 // convert req into json objects
 app.use(express.json())
 
-// endpoint
-// user-endpoint
-app.use("/api/jobseeker", auth_route)
+//  applicant user-endpoint
+app.use("/api/jobseeker", applicantAuthRoute)
+app.use("/api/jobseeker", applicantProfileRoute)
 
 // error handler
 app.use((err, req, res, next) => {
-    if (err){
-        res.status(500).send({
+    if (err.name == "JsonWebTokenError"){
+        res.status(401).send({
+            msg: "Invalid Credentials"
+        })
+    }
+    else if(err.name == "ValidationError"){
+        res.status(400).send({
             msg: err.message
+        })
+    }
+    else{
+        res.status(500).send({
+            msg: "Internal Server error"
         })
     }
 })
