@@ -1,7 +1,7 @@
-// level, skills, experience, date_of_birth, gender, salary expected: above below , equals,
-// current address, job location, applicant_id, resume
-
 const mongoose = require("mongoose");
+
+
+const {jobLevel, gender, salaryCondition, province} = require("../../constant/applicantEnum")
 
 let Schema = mongoose.Schema;
 let ObjectId = Schema.ObjectId;
@@ -9,21 +9,26 @@ let ObjectId = Schema.ObjectId;
 const applicantProfileSchema = new Schema({
     level: {
         type: String, 
-        enum: ["entry level", "mid level", "senior level", "top level"]
+        enum: jobLevel,
+        required: true,
+        lower: true
     }, 
     skills: {
-        type: Array
+        type: Array,
+        required: true
     },
     experience: {
-        type: String
+        type: String,
+        required: true
     },
     date_of_birth: {
-        type: Date
+        type: Date,
+        required: true
     },
     gender: {
         type: String,
         lower: true,
-        enum: ["male", "female"]
+        enum: gender
     },
     profile_pic: {
         type: String
@@ -33,27 +38,33 @@ const applicantProfileSchema = new Schema({
     },
     expected_salary: {
         amount: {
-            type: Number
+            type: Number,
+            required: [true, "Expected  Amount is required."]
         },
         condition: {
             type: String,
-            enum: ["greater", "equal", "small"]
+            enum: salaryCondition       
         }
     },
     current_address: {
         street: {
-            type: String
+            type: String,
+            required: [true, "Street of cuurent address is required"],
+            lower: true
         },
         city: {
-            type: String
+            type: String,
+            required: [true, "City is required in current adress."]
         },
         province:{
             type: String,
-            enum: ["lumbini", "madhesh", "bagmati", "gandaki", "karnali", "sudur paschim", "province no 1"]
+            enum: province,
+            required: [true, "Province is required in current Address."]
         }
     },
     job_location: {
-        type: Array
+        type: Array,
+        required: [true, "Preferred Job location is required."]
     },
     applicant_id: {
         type: ObjectId, 

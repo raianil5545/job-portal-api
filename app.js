@@ -1,5 +1,6 @@
 const express = require("express")
 require("dotenv").config()
+bodyParser  = require( 'body-parser' )
 
 
 const applicantAuthRoute = require("./route/authApplicant")
@@ -15,6 +16,8 @@ require("../job-portal-api/config/dbConnection")
 app.use(express.json())
 
 app.use(express.static("public"))
+app.use( bodyParser({ extended: false }) )
+
 
 //  applicant user-endpoint
 app.use("/api/jobseeker", applicantAuthRoute)
