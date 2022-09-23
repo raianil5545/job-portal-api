@@ -5,8 +5,8 @@ const upload = require("../utils/mutler")
 
 const router = express.Router();
 
-router.post("/profile", validateToken, upload.single("profile_pic"), createProfile)
-router.put("/profile", validateToken,  upload.single("profile_pic"), updateProfile)
+router.post("/profile", validateToken, upload.any(), createProfile)
+router.put("/profile", validateToken,  upload.any(), updateProfile)
 
 
 module.exports = router

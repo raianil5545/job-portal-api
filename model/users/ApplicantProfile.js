@@ -21,11 +21,16 @@ const applicantProfileSchema = new Schema({
         type: Date
     },
     gender: {
-        type: String, 
+        type: String,
+        lower: true,
         enum: ["male", "female"]
     },
-    profile_pic: {}
-    ,
+    profile_pic: {
+        type: String
+    },
+    resume: {
+        type: String
+    },
     expected_salary: {
         amount: {
             type: Number
@@ -44,7 +49,7 @@ const applicantProfileSchema = new Schema({
         },
         province:{
             type: String,
-            enum: []
+            enum: ["lumbini", "madhesh", "bagmati", "gandaki", "karnali", "sudur paschim", "province no 1"]
         }
     },
     job_location: {

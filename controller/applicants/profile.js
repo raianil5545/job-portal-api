@@ -14,8 +14,11 @@ const createProfile = (req, res, next) => {
                 if (data.length !== 0){
                     return res.status(403).send({msg: "Profile exist already."})
                 }
-                let profilePic = "uploads/" + req.file.filename
-                Profile.create({...req.body, applicant_id: user.id, profile_pic: profilePic }, (err, data) => {
+                let files = {}
+                req.files.map(file => {
+                    files[file.fieldname] = "uploads/" + file.fieldname + "/" + file.filename
+                })
+                Profile.create({...req.body, applicant_id: user.id, ...files }, (err, data) => {
                     if (err){
                         return next(err)
                     }
@@ -38,24 +41,23 @@ const updateProfile = async (req, res, next) => {
                     return next(err)
                 } 
                 let profileID = data[0].id
-                let directoryPath = __basedir + "/public/" + data[0].profile_pic 
-                
-                // deleting the old profile pic and upadting with new
-
-                fs.unlink(directoryPath, (err, data) => {
+                let files = {}
+                Promise.all(req.files.map(file => {
+                    files[file.fieldname] = "uploads/" + file.fieldname + "/" + file.filename
+                    let directoryPath = __basedir + "/public/" + data[0][file.fieldname]
+                    fs.unlink(directoryPath, (err, data) =>{
+                        if(err) {
+                            return next(err)
+                        }
+                    })
+                }))
+                Profile.findByIdAndUpdate(profileID, {...req.body, applicant_id: user.id, ...files}, (err, data) => {
                     if (err){
                         return next(err)
                     }
-                    let profilePic = "uploads/" + req.file.filename
-                    Profile.findByIdAndUpdate(profileID, {...req.body, applicant_id: user.id, profile_pic: profilePic}, (err, data) => {
-                    if (err){
-                        return next(err)
-                    }
-                    console.log(data)
-                    return res.send(data)
+                    return res.send({msg: "Profile  Successfully updated"})
+                })
             })
-                })
-                })
         }
         catch(err){
             return next(err)
