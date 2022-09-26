@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 
-const {jobLevel, gender, salaryCondition, province} = require("../../constant/applicantEnum")
+const {jobLevel, gender, salaryCondition, province} = require("../../constant/userEnum")
 
 let Schema = mongoose.Schema;
 let ObjectId = Schema.ObjectId;

@@ -5,7 +5,7 @@ const path = require('path');
 
 const createProfile = (req, res, next) => {
     let user = req.user
-    if(user.isApplicant){
+    if(user.role == "applicant"){
         try{
             Profile.find({applicant_id: user.id}, (err, data) => {
                 if(err){
@@ -34,7 +34,7 @@ const createProfile = (req, res, next) => {
 
 const updateProfile = async (req, res, next) => {
     let user = req.user
-    if (user.isApplicant){
+    if (user.role == "applicant"){
         try {
             Profile.find({applicant_id: user.id}, (err, data) => {
                 if (err){

@@ -20,8 +20,8 @@ app.use( bodyParser({ extended: false }) )
 
 
 //  applicant user-endpoint
-app.use("/api/jobseeker", applicantAuthRoute)
-app.use("/api/jobseeker", applicantProfileRoute)
+app.use("/api/user", applicantAuthRoute)
+app.use("/api/user", applicantProfileRoute)
 
 // error handler
 app.use((err, req, res, next) => {

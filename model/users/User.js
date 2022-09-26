@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 
+const { role } = require("../../constant/userEnum")
+
 let Schema = mongoose.Schema;
 
 const applicantSchema = new Schema({
@@ -23,6 +25,12 @@ const applicantSchema = new Schema({
         select: false,
         required: true
     },
+    role: {
+        type: String,
+        enum: role,
+        required: true,
+        lowercase: true,
+    },
     is_active: {
         type: Boolean,
         default: true
@@ -30,5 +38,5 @@ const applicantSchema = new Schema({
         timestamps: true
     })
 
-const applicantModel = mongoose.model("Applicant", applicantSchema);
-module.exports = applicantModel
+const userModel = mongoose.model("User", applicantSchema);
+module.exports = userModel

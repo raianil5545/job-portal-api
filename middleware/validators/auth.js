@@ -1,13 +1,13 @@
 const { body, check } = require("express-validator");
 const validate = require("../../utils/validate");
-const Applicant = require("../../model/users/Applicant")
+const User = require("../../model/users/User")
 
 const applicantValidator = validate(
     [
         body("name").notEmpty().withMessage("Name is required Field."),
         body("email").isEmail().withMessage("Invalid Email address"),
         body("email").custom(value => {
-            return Applicant.countDocuments({email: value}).then(count => {
+            return User.countDocuments({email: value}).then(count => {
                 if (count){
                     return Promise.reject('E-mail already in use');
                 }
@@ -38,7 +38,7 @@ const loginApplicantValidator = validate(
     [
         body("email").isEmail().withMessage("Invalid Email address"),
         body("email").custom(value => {
-            return Applicant.countDocuments({email: value}).then(count => {
+            return User.countDocuments({email: value}).then(count => {
                 if (!count){
                     return Promise.reject("Email doesn't exist")
                 }

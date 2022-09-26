@@ -2,7 +2,7 @@ const { body, check } = require("express-validator");
 
 
 const validate = require("../../utils/validate");
-const { jobLevel, gender } = require("../../constant/applicantEnum")
+const { jobLevel, gender } = require("../../constant/userEnum")
 
 
 const applicantValidator = validate([
