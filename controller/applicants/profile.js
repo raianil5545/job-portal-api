@@ -1,13 +1,18 @@
-const Profile = require("../../model/users/ApplicantProfile")
+const userModelSelector = require("../../utils/userModelSelector")
+
+
 const fs = require('fs');
 const path = require('path');
 
 
 const createProfile = (req, res, next) => {
     let user = req.user
-    if(user.role == "applicant"){
+    if(user.role){
+        model = userModelSelector(user, res)
+        let query = (user.role == "applicant") ? {applicant_id: user.id}: {employer_id: user.id}
+        console.log(query)
         try{
-            Profile.find({applicant_id: user.id}, (err, data) => {
+            model.find(query, (err, data) => {
                 if(err){
                     return next(err)
                 }                
@@ -18,7 +23,7 @@ const createProfile = (req, res, next) => {
                 req.files.map(file => {
                     files[file.fieldname] = "uploads/" + file.fieldname + "/" + file.filename
                 })
-                Profile.create({...req.body, applicant_id: user.id, ...files }, (err, data) => {
+                model.create({...req.body, ...query, ...files }, (err, data) => {
                     if (err){
                         return next(err)
                     }
@@ -30,13 +35,19 @@ const createProfile = (req, res, next) => {
             return next(err)
         }
     }
+    else {
+        return res.status.send({msg: "Missing user role"})
+    }
 }
 
 const updateProfile = async (req, res, next) => {
     let user = req.user
-    if (user.role == "applicant"){
+    if (user.role){
         try {
-            Profile.find({applicant_id: user.id}, (err, data) => {
+            model = userModelSelector(user, res)
+            let query = (user.role == "applicant") ? {applicant_id: user.id}: {employer_id: user.id}
+            console.log(query)
+            model.find(query, (err, data) => {
                 if (err){
                     return next(err)
                 } 
@@ -51,7 +62,7 @@ const updateProfile = async (req, res, next) => {
                         }
                     })
                 }))
-                Profile.findByIdAndUpdate(profileID, {...req.body, applicant_id: user.id, ...files}, (err, data) => {
+                model.findByIdAndUpdate(profileID, {...req.body, ...query, ...files}, (err, data) => {
                     if (err){
                         return next(err)
                     }
@@ -63,10 +74,31 @@ const updateProfile = async (req, res, next) => {
             return next(err)
         }
     }
+    else {
+        res.status(403).send({msg: "Missing user role"})
+    }
+}
+
+const showProfile = (req, res, next) => {
+    let user = req.user;
+    let model = userModelSelector(user, res);
+    let query = (user.role == "applicant") ? {applicant_id: user.id}: {employer_id: user.id}
+    try {
+        model.find(query, (err, data) => {
+            if (err){
+                return next(err)
+            }
+            return res.send(data)
+        })
+    }
+    catch (err){
+        return next(err)
+    }
 }
 
 
 module.exports = {
     createProfile,
-    updateProfile
+    updateProfile,
+    showProfile
 }

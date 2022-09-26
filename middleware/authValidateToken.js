@@ -8,7 +8,6 @@ const validateToken = (req, res, next) => {
     }
     try {
         let decoded = jwt.verify(token, process.env.jwtSecret)
-        console.log(decoded)
         req["user"] = {email: decoded.email, id:decoded.id, role: decoded.role}
         next()
     }

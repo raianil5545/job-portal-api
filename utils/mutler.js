@@ -24,6 +24,15 @@ const storage = multer.diskStorage({
           return cb(null, dir)
           })
       }
+      if (file.fieldname == "logo"){
+        const dir = 'public/uploads/logo'
+        fs.exists(dir, exist => {
+          if (!exist) {
+            return fs.mkdir(dir, error => cb(error, dir))
+          }
+          return cb(null, dir)
+          })
+      }
     },
     filename: function (req, file, cb) {
       const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9) + path.extname(file.originalname);

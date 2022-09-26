@@ -49,7 +49,7 @@ const applicantProfileSchema = new Schema({
     current_address: {
         street: {
             type: String,
-            required: [true, "Street of cuurent address is required"],
+            required: [true, "Street of current address is required"],
             lower: true
         },
         city: {
@@ -68,7 +68,7 @@ const applicantProfileSchema = new Schema({
     },
     applicant_id: {
         type: ObjectId, 
-        ref: "Applicant"
+        ref: "User"
     }},
     {
         timestamps: true
