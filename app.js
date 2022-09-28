@@ -1,11 +1,12 @@
-const express = require("express")
-require("dotenv").config()
-bodyParser  = require( 'body-parser' )
+const express = require("express");
+require("dotenv").config();
+bodyParser  = require('body-parser');
 
 
-const applicantAuthRoute = require("./route/authApplicant")
-const applicantProfileRoute = require("./route/applicantProfile")
-const employerProfileroute = require("./route/employerProfile")
+const applicantAuthRoute = require("./route/authApplicant");
+const applicantProfileRoute = require("./route/applicantProfile");
+const employerProfileroute = require("./route/employerProfile");
+const jobRoute = require("./route/jobRoute")
 const app = express();
 global.__basedir = __dirname;
 
@@ -24,6 +25,7 @@ app.use( bodyParser({ extended: false }) )
 app.use("/api/user", applicantAuthRoute)
 app.use("/api/applicant", applicantProfileRoute)
 app.use("/api/employer", employerProfileroute)
+app.use("/api/employer", jobRoute)
 
 // error handler
 app.use((err, req, res, next) => {
