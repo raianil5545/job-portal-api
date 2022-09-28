@@ -1,12 +1,11 @@
 const Job = require("../../model/jobs/Jobs");
-const Profile = require("../../model/users/EmployerProfile")
 
 
 const createJob = (req, res, next) => {
     let user = req.user;
     if (user.role == "employer"){
         try {
-            let job = Job.create({...req.body, employer_id: user.id }, (err, data) => {
+            Job.create({...req.body, employer_id: user.id }, (err, data) => {
                 if(err){
                     return next(err)
                 }
@@ -23,6 +22,50 @@ const createJob = (req, res, next) => {
 }
 
 
+const showEmployerJobs = (req, res, next) => {
+    let user = req.user;
+    if (user.role == "employer"){
+        try {
+            Job.find({employer_id: user.id}, (err, data) => {
+                if(err){
+                    return next(err)
+                }
+                return res.send(data)
+               
+            })
+        }
+        catch(err){
+            return next(err)
+        }
+    }
+    else {
+        res.status(403).send({msg: "Unauthorized"})
+    }
+}
+
+const updateJob = (req, res, next) => {
+    let user = req.user;
+    if (user.role == "employer"){
+        try {
+            Job.findByIdAndUpdate(req.params.id, {...req.body}, (err, data) => {
+                if(err){
+                    return next(err)
+                }
+                return res.send({msg: "Job updated"})
+            })
+        }
+        catch(err){
+            return next(err)
+        }
+    }
+    else {
+        res.status(403).send({msg: "Unauthorized"})
+    }
+}
+
+
 module.exports = {
-    createJob
+    createJob,
+    showEmployerJobs,
+    updateJob
 }
