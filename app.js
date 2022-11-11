@@ -1,6 +1,8 @@
 const express = require("express");
 require("dotenv").config();
 bodyParser  = require('body-parser');
+const cors = require('cors')
+
 
 
 const applicantAuthRoute = require("./route/authApplicant");
@@ -13,6 +15,9 @@ global.__basedir = __dirname;
 
 // connecting to the database
 require("../job-portal-api/config/dbConnection")
+
+// cors middleware
+app.use(cors());
 
 // convert req into json objects
 app.use(express.json())

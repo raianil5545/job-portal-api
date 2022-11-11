@@ -41,14 +41,17 @@ const login = async (req, res, next) => {
                 })
             }
             else {
-                return res.status(401).send({
-                    msg: "Invalid Credentials"
-                })
+                return res.status(401).send({errors: [
+                    {
+                        msg: "Invalid Credentials",
+                        param: "password"
+                    }
+                ]})
             }
         }
         else {
             return res.status(403).send({
-                msg: "Inactive acoount"
+                msg: "Inactive account"
             })
         }
     }
