@@ -1,4 +1,4 @@
-const User = require("../../model/users/User");
+const User = require("../model/users/User");
 const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
 
@@ -37,7 +37,7 @@ const login = async (req, res, next) => {
                 let token = jwt.sign(jwtUserObj, process.env.jwtSecret);
                 return res.send({
                     accessToken: token,
-                    role: user.role
+                    user: jwtUserObj               
                 })
             }
             else {
@@ -60,7 +60,12 @@ const login = async (req, res, next) => {
     }
 }
 
+const getUser = (req, res, next) => {
+    res.send(req.user)
+}
+
 module.exports = {
     register,
-    login
+    login,
+    getUser
 }

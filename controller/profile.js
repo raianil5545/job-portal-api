@@ -1,16 +1,25 @@
-const userModelSelector = require("../../utils/userModelSelector")
+const userModelSelector = require("../utils/userModelSelector")
 
 
 const fs = require('fs');
 const path = require('path');
+const { JsonWebTokenError } = require("jsonwebtoken");
 
 
 const createProfile = (req, res, next) => {
     let user = req.user
+    if (Object.keys({...req.body}).includes("headquarter_address")){
+        req.body["headquarter_address"] = JSON.parse(req.body["headquarter_address"])
+    }
+    if (Object.keys({...req.body}).includes("current_address")){
+        req.body["current_address"] = JSON.parse(req.body["current_address"])
+    }
+    if (Object.keys({...req.body}).includes("expected_salary")){
+        req.body["expected_salary"] = JSON.parse(req.body["expected_salary"])
+    }
     if(user.role){
         model = userModelSelector(user, res)
         let query = (user.role == "applicant") ? {applicant_id: user.id}: {employer_id: user.id}
-        console.log(query)
         try{
             model.find(query, (err, data) => {
                 if(err){
@@ -20,9 +29,9 @@ const createProfile = (req, res, next) => {
                     return res.status(403).send({msg: "Profile exist already."})
                 }
                 let files = {}
-                req.files.map(file => {
+                Promise.all(req.files.map(file => {
                     files[file.fieldname] = "uploads/" + file.fieldname + "/" + file.filename
-                })
+                }))
                 model.create({...req.body, ...query, ...files }, (err, data) => {
                     if (err){
                         return next(err)
@@ -42,11 +51,20 @@ const createProfile = (req, res, next) => {
 
 const updateProfile = async (req, res, next) => {
     let user = req.user
+    if (req.body["current_address"]){
+        req.body["current_address"] = JSON.parse(req.body["current_address"])
+    }
+    if (req.body["expected_salary"]){
+        req.body["expected_salary"] = JSON.parse(req.body["expected_salary"])
+    }
+    if (req.body["headquarter_address"]){
+        req.body["headquarter_address"] = JSON.parse(req.body["headquarter_address"])
+    }
+    
     if (user.role){
         try {
             model = userModelSelector(user, res)
             let query = (user.role == "applicant") ? {applicant_id: user.id}: {employer_id: user.id}
-            console.log(query)
             model.find(query, (err, data) => {
                 if (err){
                     return next(err)
@@ -66,7 +84,7 @@ const updateProfile = async (req, res, next) => {
                     if (err){
                         return next(err)
                     }
-                    return res.send({msg: "Profile  Successfully updated"})
+                    return res.send({msg: data})
                 })
             })
         }
