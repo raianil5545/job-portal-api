@@ -3,6 +3,9 @@ const Job = require("../../model/jobs/Jobs");
 
 const createJob = (req, res, next) => {
     let user = req.user;
+    if (req.body["job_location"]){
+        req.body["job_location"] = JSON.parse(req.body["job_location"])
+    }
     if (user.role == "employer"){
         try {
             Job.create({...req.body, employer_id: user.id }, (err, data) => {
@@ -45,6 +48,9 @@ const showEmployerJobs = (req, res, next) => {
 
 const updateJob = (req, res, next) => {
     let user = req.user;
+    if (req.body["job_location"]){
+        req.body["job_location"] = JSON.parse(req.body["job_location"])
+    }
     if (user.role == "employer"){
         try {
             Job.findByIdAndUpdate(req.params.id, {...req.body}, (err, data) => {

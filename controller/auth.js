@@ -24,13 +24,15 @@ const register = (req, res, next) => {
 const login = async (req, res, next) => {
     try {
         let email = req.body.email;
-        let user = await User.findOne({ email }).select("password email id is_active role");
+        let user = await User.findOne({ email }).select("password email id is_active role name");
+        console.log(user)
 
         if (user.is_active) {
             let jwtUserObj = {
                 id: user.id,
                 email: user.email, 
-                role: user.role
+                role: user.role,
+                name: user.name            
             }
             let isvalidUser = bcrypt.compareSync(req.body.password, user.password)
             if (isvalidUser) {

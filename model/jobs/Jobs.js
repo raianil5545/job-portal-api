@@ -4,8 +4,11 @@ const mongoose = require("mongoose");
 let Schema = mongoose.Schema;
 let ObjectId = Schema.ObjectId;
 
-
 const jobsSchema = new Schema({
+    job_name: {
+        type: String,
+        required: true,
+    },
     job_category: {
         type: String,
         required: true,
@@ -54,10 +57,10 @@ const jobsSchema = new Schema({
         required: true
     },
     other_specification: {
-        type: String
+        type: Array
     },
     job_description: {
-        type: String,
+        type: Array,
         required: true
     },
     employer_id: {

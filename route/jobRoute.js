@@ -7,8 +7,8 @@ const { jobValidator } = require("../middleware/validators/jobs")
 
 let router = express.Router();
 
-router.post("/jobs", validateToken, jobValidator, createJob);
+// router.post("/job/post", validateToken, jobValidator, createJob);
 router.get("/jobs", validateToken, showEmployerJobs)
-router.put("/job/:id", validateToken, updateJob)
+router.put("/job/update/:id", validateToken, updateJob)
 
 module.exports = router;

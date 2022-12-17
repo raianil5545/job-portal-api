@@ -13,6 +13,7 @@ const applicantProfileRoute = require("./route/applicantProfile");
 const employerProfileroute = require("./route/employerProfile");
 const jobRoute = require("./route/jobRoute")
 const getUserRoute = require("./route/getUser")
+const showRoute = require("./route/showRoute")
 
 const app = express();
 global.__basedir = __dirname;
@@ -55,6 +56,7 @@ app.use("/api/applicant", applicantProfileRoute)
 app.use("/api/employer", employerProfileroute)
 app.use("/api/employer", jobRoute)
 app.use("/api/users", getUserRoute)
+app.use("/api/user", showRoute)
 
 // error handler
 app.use((err, req, res, next) => {

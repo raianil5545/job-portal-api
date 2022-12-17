@@ -99,6 +99,7 @@ const updateProfile = async (req, res, next) => {
 
 const showProfile = (req, res, next) => {
     let user = req.user;
+
     let model = userModelSelector(user, res);
     let query = (user.role == "applicant") ? {applicant_id: user.id}: {employer_id: user.id}
     try {
