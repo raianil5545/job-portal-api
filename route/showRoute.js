@@ -1,7 +1,11 @@
 const express = require("express");
+
+const {showJobs} = require("../controller/show");
+const {validateToken} = require("../middleware/authValidateToken");
+
 const router = express.Router();
-const {showJobs} = require("../controller/show")
 
-router.get("/jobs", showJobs)
+router.get("/jobs", showJobs);
+router.get("/applicant/jobs", validateToken, showJobs);
 
-module.exports = router
+module.exports = router;

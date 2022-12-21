@@ -1,6 +1,7 @@
 const { body, check } = require("express-validator");
+
 const validate = require("../../utils/validate");
-const User = require("../../model/users/User")
+const User = require("../../model/users/User");
 
 const applicantValidator = validate(
     [
@@ -11,14 +12,14 @@ const applicantValidator = validate(
                 if (count){
                     return Promise.reject('E-mail already in use');
                 }
-            })
+            });
         }),
         body("mobile_number").custom(value => {
             let mobileNumber = /^\d{10}$/;
             if (!value.match(mobileNumber)){
                 return Promise.reject("Invalid Phone Number");
             }
-            return true
+            return true;
         }),
         check("password")
             .isLength({min: 8})
@@ -32,7 +33,7 @@ const applicantValidator = validate(
             .matches(/[!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\|]+/)
             .withMessage("must contain a special characters")
     ]
-)
+);
 
 const loginApplicantValidator = validate(
     [
@@ -40,9 +41,9 @@ const loginApplicantValidator = validate(
         body("email").custom(value => {
             return User.countDocuments({email: value}).then(count => {
                 if (!count){
-                    return Promise.reject("Email doesn't exist")
+                    return Promise.reject("Email doesn't exist");
                 }
-            })
+            });
         }),
         check("password")
             .isLength({min: 8})
@@ -56,9 +57,9 @@ const loginApplicantValidator = validate(
             .matches(/[!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\|]+/)
             .withMessage("must contain a special characters")
     ]
-)
+);
 
 module.exports = {
     applicantValidator, 
     loginApplicantValidator
-}
+};

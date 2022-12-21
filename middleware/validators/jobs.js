@@ -14,7 +14,7 @@ const jobValidator = validate([
     body("experience_level").notEmpty().withMessage("Experience Level is required Field."),
     body("skills_required").notEmpty().withMessage("Skills required is necessary Filed."),
     body("job_description").notEmpty().withMessage("Job description is required Field.")
-])
+]);
 
 
 module.exports = {

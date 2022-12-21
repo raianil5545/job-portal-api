@@ -1,6 +1,7 @@
-const User = require("../model/users/User");
 const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
+
+const User = require("../model/users/User");
 
 
 const register = (req, res, next) => {
@@ -9,7 +10,7 @@ const register = (req, res, next) => {
         req["body"]["password"] = hash_password;
         let user = User.create(req.body, (err, data) => {
             if (err) {
-                return next(err)
+                return next(err);
             }
             user = data.toObject();
             delete user.password;
@@ -17,7 +18,7 @@ const register = (req, res, next) => {
         })
     }
     catch (err) {
-        next(err)
+        next(err);
     }
 }
 
@@ -25,7 +26,6 @@ const login = async (req, res, next) => {
     try {
         let email = req.body.email;
         let user = await User.findOne({ email }).select("password email id is_active role name");
-        console.log(user)
 
         if (user.is_active) {
             let jwtUserObj = {
@@ -33,14 +33,14 @@ const login = async (req, res, next) => {
                 email: user.email, 
                 role: user.role,
                 name: user.name            
-            }
-            let isvalidUser = bcrypt.compareSync(req.body.password, user.password)
+            };
+            let isvalidUser = bcrypt.compareSync(req.body.password, user.password);
             if (isvalidUser) {
                 let token = jwt.sign(jwtUserObj, process.env.jwtSecret);
                 return res.send({
                     accessToken: token,
                     user: jwtUserObj               
-                })
+                });
             }
             else {
                 return res.status(401).send({errors: [
@@ -48,26 +48,26 @@ const login = async (req, res, next) => {
                         msg: "Invalid Credentials",
                         param: "password"
                     }
-                ]})
+                ]});
             }
         }
         else {
             return res.status(403).send({
                 msg: "Inactive account"
-            })
+            });
         }
     }
     catch (err) {
-        next(err)
+        next(err);
     }
 }
 
 const getUser = (req, res, next) => {
-    res.send(req.user)
+    res.send(req.user);
 }
 
 module.exports = {
     register,
     login,
     getUser
-}
+};

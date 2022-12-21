@@ -2,7 +2,7 @@ const { body, check } = require("express-validator");
 
 
 const validate = require("../../utils/validate");
-const { jobLevel, gender } = require("../../constant/userEnum")
+const { jobLevel, gender } = require("../../constant/userEnum");
 
 
 const applicantValidator = validate([
@@ -14,8 +14,8 @@ const applicantValidator = validate([
     check("gender").exists().withMessage("Candidate gender is required field.")
         .toLowerCase().isIn(gender).withMessage("Inavlid Gender"),
     body("job_location").exists().withMessage("Preferred job location is required field.")
-])
+]);
 
 module.exports = {
     applicantValidator
-}
+};

@@ -8,14 +8,17 @@ const jobsSchema = new Schema({
     job_name: {
         type: String,
         required: true,
+        lower: true
     },
     job_category: {
         type: String,
         required: true,
+        lower: true
     },
     job_level: {
         type: String,
         required: true,
+        lower: true
     },
     no_of_vacancy: {
         type: Number,
@@ -25,6 +28,7 @@ const jobsSchema = new Schema({
     employment_type: {
         type: String,
         required: true,
+        lower: true
     },
     job_location: {
         street_address:{
@@ -46,15 +50,18 @@ const jobsSchema = new Schema({
     },
     education_level: {
         type: String,
-        required: true
+        required: true,
+        lower: true
     },
     experience_level: {
         type: String,
-        required: true
+        required: true,
+        lower: true
     },
     skills_required: {
         type: Array,
-        required: true
+        required: true,
+        lower: true
     },
     other_specification: {
         type: Array

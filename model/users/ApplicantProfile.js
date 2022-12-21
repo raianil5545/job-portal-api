@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
 
 
-const {jobLevel, gender, salaryCondition, province} = require("../../constant/userEnum")
+const {jobLevel, gender, salaryCondition, province} = require("../../constant/userEnum");
 
-let Schema = mongoose.Schema;
-let ObjectId = Schema.ObjectId;
+const Schema = mongoose.Schema;
+const ObjectId = Schema.ObjectId;
 
 const applicantProfileSchema = new Schema({
     level: {
@@ -15,11 +15,13 @@ const applicantProfileSchema = new Schema({
     }, 
     skills: {
         type: Array,
-        required: true
+        required: true,
+        lower: true
     },
     experience: {
         type: String,
-        required: true
+        required: true,
+        lower: true
     },
     date_of_birth: {
         type: Date,
@@ -43,7 +45,8 @@ const applicantProfileSchema = new Schema({
         },
         condition: {
             type: String,
-            enum: salaryCondition       
+            enum: salaryCondition,
+            lower: true      
         }
     },
     current_address: {
@@ -72,7 +75,7 @@ const applicantProfileSchema = new Schema({
     }},
     {
         timestamps: true
-    })
+    });
 
-let applicantProfileModel = mongoose.model("ApplicantProfile", applicantProfileSchema)
-module.exports = applicantProfileModel
+let applicantProfileModel = mongoose.model("ApplicantProfile", applicantProfileSchema);
+module.exports = applicantProfileModel;
