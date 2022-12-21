@@ -46,12 +46,25 @@ const showJobs = async (req, res, next) => {
                     }
                 }
             }
-
             res.send(response);
         });
     }
     else {
-        await Job.find({}).exec().then(function (jobs) {
+        let search_term = req.query.search_term;
+        await Job.aggregate(
+            [
+                {
+                    $match: {
+                        $or: [
+                            { job_category: { $regex: RegExp(search_term, "i") } },
+                            { job_name: { $regex: RegExp(search_term, "i") } },
+                            { skills_required: { $regex: RegExp(search_term, "i") } },
+                        ]
+                    }
+                }
+                
+            ]
+        ).exec().then(function (jobs) {
             let employer_ids = jobs.map((job) => {
                 return job.employer_id;
             });
@@ -74,7 +87,7 @@ const showJobs = async (req, res, next) => {
             for (var i = 0; i < jobs.length; i++) {
                 for (var j = 0; j < profiles.length; j++) {
                     if (profiles[j].employer_id.toString() == jobs[i].employer_id.toString()) {
-                        response.push({ ...jobs[i].toObject(), logo: profiles[j].logo });
+                        response.push({ ...jobs[i], logo: profiles[j].logo });
                     }
                 }
             }
