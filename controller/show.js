@@ -6,15 +6,19 @@ const ApplicantProfile = require("../model/users/ApplicantProfile");
 const showJobs = async (req, res, next) => {
     if (req?.user?.role === "applicant") {
         let skills = await ApplicantProfile.find({ applicant_id: req.user.id }).exec().then((profile) => {
-            return profile[0].skills;
+            return profile[0]?.skills;
         });
 
         await Job.aggregate([
             {
                 $match: {
-                    skills_required: {
-                        $in: skills
-                    }
+                    $or: [
+                        {
+                            skills_required: {
+                                $in: skills
+                            }
+                        }
+                    ]
                 }
             }
         ]).exec().then(
@@ -35,9 +39,6 @@ const showJobs = async (req, res, next) => {
         ).then(function (results) {
             var jobs = results[0];
             var profiles = results[1];
-            const employer_ids = profiles.map((profile) => {
-                return profile.employer_id.toString();
-            });
             let response = [];
             for (var i = 0; i < jobs.length; i++) {
                 for (var j = 0; j < profiles.length; j++) {

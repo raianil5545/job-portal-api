@@ -30,7 +30,7 @@ app.use("/api/employer", employerProfileroute);
 app.use("/api/employer", jobRoute);
 app.use("/api", showRoute);
 app.use("/api/users", getUserRoute);
-app.use("/api/user", showRoute);
+app.use("/api", showRoute);
 
 // error handler
 app.use((err, req, res, next) => {
