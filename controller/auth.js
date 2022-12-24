@@ -26,7 +26,6 @@ const login = async (req, res, next) => {
     try {
         let email = req.body.email;
         let user = await User.findOne({ email }).select("password email id is_active role name");
-
         if (user.is_active) {
             let jwtUserObj = {
                 id: user.id,

@@ -2,6 +2,7 @@ const { body, check } = require("express-validator");
 
 const validate = require("../../utils/validate");
 const User = require("../../model/users/User");
+console.log(User)
 
 const applicantValidator = validate(
     [

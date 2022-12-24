@@ -12,7 +12,7 @@ const showRoute = require("./route/showRoute");
 
 
 const app = express();
-  
+
 // connecting to the database
 require("../job-portal-api/config/dbConnection");
 
@@ -35,28 +35,29 @@ app.use("/api", showRoute);
 // error handler
 app.use((err, req, res, next) => {
     console.log(err);
-    if (err.name == "JsonWebTokenError"){
+    if (err.name == "JsonWebTokenError") {
         res.status(401).send({
             msg: "Invalid Credentials"
         });
     }
-    else if(err.name == "ValidationError"){
+    else if (err.name == "ValidationError") {
         res.status(400).send({
             msg: err.message
         });
     }
-    else{
+    else {
         res.status(500).send({
             msg: "Internal Server error"
         });
     }
 })
 
+
 app.listen(process.env.PORT, (err, data) => {
-    if (err){
+    if (err) {
         console.log(err);
     }
-    else{
+    else {
         console.log("... listening ....");
     }
 })

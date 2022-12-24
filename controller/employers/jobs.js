@@ -70,9 +70,34 @@ const updateJob = (req, res, next) => {
     }
 }
 
+const deleteJob = (req, res, next) => {
+    const user = req.user;
+    Job.find({_id: req.params.id}, (err, data) => {
+        if (data){
+            if (user.id === data[0]?.employer_id.toString()){
+                Job.deleteOne({employer_id: user.id}, (err, data)=> {
+                    if (data){
+                        console.log(data)
+                        res.send({data: "job deleted"})
+                    }
+                    else {
+                        res.send.status(500).send(err)
+                    }
+                })
+               }
+            else {
+                res.status(400).send({error: "bad request"})
+               }
+        }
+        else {
+            res.status(401).send({error: "unauthoried"})
+        }
+    })
+}
 
 module.exports = {
     createJob,
     showEmployerJobs,
-    updateJob
+    updateJob,
+    deleteJob
 };

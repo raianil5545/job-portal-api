@@ -8,6 +8,9 @@ const showJobs = async (req, res, next) => {
         let skills = await ApplicantProfile.find({ applicant_id: req.user.id }).exec().then((profile) => {
             return profile[0]?.skills;
         });
+        if (!skills){
+            skills = []
+        }
 
         await Job.aggregate([
             {
