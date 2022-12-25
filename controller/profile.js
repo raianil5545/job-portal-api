@@ -1,6 +1,5 @@
 const fs = require('fs');
 const path = require('path');
-const { JsonWebTokenError } = require("jsonwebtoken");
 
 const userModelSelector = require("../utils/userModelSelector");
 

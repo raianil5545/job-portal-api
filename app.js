@@ -9,6 +9,7 @@ const employerProfileroute = require("./route/employerProfile");
 const jobRoute = require("./route/jobRoute");
 const getUserRoute = require("./route/getUser")
 const showRoute = require("./route/showRoute");
+const applyJob = require("./route/applyJob")
 
 
 const app = express();
@@ -31,6 +32,8 @@ app.use("/api/employer", jobRoute);
 app.use("/api", showRoute);
 app.use("/api/users", getUserRoute);
 app.use("/api", showRoute);
+app.use("/api/applicant/job", applyJob);
+
 
 // error handler
 app.use((err, req, res, next) => {
